@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/kaching.wav-2395c8f3574f3d8ee7e18fd95044e325.sample"
+
+[deps]
+
+source_file="res://Effects/kaching.wav"
+dest_files=[ "res://.import/kaching.wav-2395c8f3574f3d8ee7e18fd95044e325.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=true
+edit/normalize=true
+edit/loop=false
+compress/mode=0

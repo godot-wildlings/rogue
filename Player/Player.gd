@@ -1,0 +1,376 @@
+"""
+Player should be able to:
+	- move
+	- shoot
+	- take damage
+	- die
+	- interact with NPCs
+"""
+
+extends KinematicBody2D
+
+#signal health_changed
+signal level_requested(path_to_level)
+signal weapon_requested(weapon_name)
+signal started_shooting
+signal stopped_shooting
+
+enum States { IDLE, WALKING, RUNNING, CHATTING, DEAD }
+
+onready var health : float = max_health # setget _set_health
+
+export var max_health : float = 10
+
+const SPEED : int = 200
+const RUN_SPEED_MULTIPLIER : float = 2.0
+var _state : int = States.IDLE setget _set_state
+var _iframes : int = 0
+var _move_dir =  Vector2.ZERO
+var velocity : Vector2
+var temp_immunity_active : bool = false
+var NPCFollowers : Array = []
+
+
+
+export var running_footstep_frequency = 0.1
+export var walking_footstep_frequency = 0.2
+
+var previous_positions : Array = [] # <-- HAX for the demon h_flipping
+
+var inventory_items : Dictionary = {}
+var keys_held : Dictionary = {}
+
+func _ready():
+	global.player = self
+	$Label.text = "Health: " + str(health)
+	#warning-ignore:return_value_discarded
+	connect_signals()
+	become_human()
+
+
+
+func connect_signals():
+
+#	var _err
+#	_err = connect("health_changed", self, "_on_health_change")
+#	if _err: push_warning(_err)
+
+
+	var _err = null
+	_err = connect("weapon_requested", $Sprite/WeaponSlots, "_on_weapon_requested")
+	if _err: push_warning(_err)
+
+			
+	
+func become_human():
+	emit_signal("weapon_requested", "Bow")
+	show_human_sprites()
+		
+func show_human_sprites():
+	$Sprite.show()
+
+
+
+#warning-ignore:unused_argument
+func _process(delta):
+	if _state == States.CHATTING or _state == States.DEAD:
+		return
+		
+	if global.options["hold_to_shoot"] == false:
+		if Input.is_action_just_pressed("attack"):
+			attack()
+	else:
+		# Note: this will send a continuous string of requests..
+		# but the weapon should reject them if the reload timer hasn't triggered
+		if Input.is_action_pressed("attack"):
+			attack()
+			
+		if Input.is_action_just_pressed("attack"):
+			for NPC in NPCFollowers:
+				connect("started_shooting", NPC, "_on_player_started_shooting")
+				emit_signal("started_shooting")
+				disconnect("started_shooting", NPC, "_on_player_started_shooting")
+				
+		elif Input.is_action_just_released("attack"):
+			for NPC in NPCFollowers:
+				connect("stopped_shooting", NPC, "_on_player_stopped_shooting")
+				emit_signal("stopped_shooting")
+				disconnect("stopped_shooting", NPC, "_on_player_stopped_shooting")
+				
+
+
+
+func attack():
+	"""relayed through a few subsystems"""
+	$Sprite/WeaponSlots.attack()
+
+func _physics_process(delta):
+	match _state:
+		States.IDLE: 
+			_state_idle()
+		States.WALKING:
+			_state_walking(delta)
+			
+		States.RUNNING:
+			_state_running(delta)
+
+func _state_idle():
+	_controls_loop()
+	if _move_dir != Vector2.ZERO:
+		_set_state(States.RUNNING)
+	else:
+		_update_human_animation(Vector2.ZERO)
+		_damage_loop()
+
+#warning-ignore:unused_argument
+func _state_walking(delta : float):
+	if not Input.is_action_pressed("mv_walk"):
+		_set_state(States.RUNNING)
+	else:
+		_controls_loop()
+		if _move_dir == Vector2.ZERO:
+			_set_state(States.IDLE)
+		else:
+			_movement_loop(delta)
+
+#warning-ignore:unused_argument
+func _state_running(delta : float):
+	if Input.is_action_pressed("mv_walk"):
+		_set_state(States.WALKING)
+	else:
+		_controls_loop()
+		if _move_dir == Vector2.ZERO:
+			_set_state(States.IDLE)
+		else:
+			_movement_loop(delta)
+
+func _controls_loop():
+	var up : bool = Input.is_action_pressed("mv_up")
+	var down : bool = Input.is_action_pressed("mv_down")
+	var left : bool = Input.is_action_pressed("mv_left")
+	var right : bool = Input.is_action_pressed("mv_right")
+	
+	_move_dir.x = - int(left) + int(right)
+	_move_dir.y = - int(up) + int(down)
+	
+func get_kiting_multiplier() -> float:
+	var myPos = get_global_position()
+	var mousePos = get_global_mouse_position()
+	if _move_dir.dot( (mousePos - myPos).normalized() ) < 0:
+		# info about using dot product for facing found here:
+				# https://docs.godotengine.org/en/latest/tutorials/math/vector_math.html?highlight=vector%20math#facing
+		return 0.75 # kiting. slow down
+	else:
+		return 1.0 # moving toward mouse. full speed ahead
+	
+func _movement_loop(delta):
+	
+	
+	var motion : Vector2
+	if _state == States.RUNNING:
+		motion = _move_dir.normalized() * SPEED * RUN_SPEED_MULTIPLIER * get_kiting_multiplier()
+	elif _state == States.WALKING:
+		motion = _move_dir.normalized() * SPEED
+	_update_human_animation(motion)
+	
+	
+	#warning-ignore:return_value_discarded
+	var redirected_velocity = move_and_slide(motion, Vector2.ZERO)
+	velocity = redirected_velocity
+
+func _update_human_animation(motion : Vector2):
+	if _state == States.RUNNING:
+		$AnimationPlayer.play("player_run")
+		#Moved footstep to timer: _on_FootstepPauseTimer_timeout
+		#play_random_step_sfx(true)
+	elif _state == States.WALKING:
+		$AnimationPlayer.play("player_walk")
+		#Moved footstep to timer: _on_FootstepPauseTimer_timeout
+		#play_random_step_sfx()
+
+
+#	if motion.x > 0:
+#		flip_horizontal(false)
+#	elif motion.x < 0:
+#		flip_horizontal(true)
+
+	if motion == Vector2.ZERO:
+		$AnimationPlayer.play("player_idle")
+
+#	if get_local_mouse_position().x >= 0:
+#		flip_horizontal(false)
+#	elif get_local_mouse_position().x < 0:
+#		flip_horizontal(true)
+
+	var mousePos = get_local_mouse_position()
+	flip_human_sprites(sign(mousePos.x))
+
+
+func flip_human_sprites(direction):
+		$Sprite.set_scale(Vector2(direction, 1))
+		
+		
+		#$"Sprite/WeaponSlots".scale.y = direction
+
+#warning-ignore:unused_argument
+func play_random_step_sfx(running : bool = false):
+	play_random_sfx($StepSFX)
+
+func play_random_sfx(container : Node2D):
+	if is_instance_valid(container):
+		var sfx_count : int = container.get_child_count()
+		var rnd_sfx_idx : int = randi() % sfx_count
+		var sfx_audio_player : AudioStreamPlayer2D = container.get_child(rnd_sfx_idx)
+		if is_instance_valid(sfx_audio_player):
+			if not sfx_audio_player.playing:
+				sfx_audio_player.play()
+
+func get_direction_hack():
+	# store a bunch of previous positions and get the average
+	# so you can ignore blips in velocity when animating or h_flipping
+	var myPos = get_global_position()
+	var direction_vector = Vector2.ZERO
+	previous_positions.push_front(myPos)
+	if previous_positions.size() > 5:
+		previous_positions.pop_back()
+	
+	for pos in previous_positions:
+		direction_vector += pos
+	direction_vector /= previous_positions.size()
+	direction_vector -= myPos
+
+	print(direction_vector)
+
+	if direction_vector.x > 0:
+		print("left")
+		return -1
+		
+	else:
+		print("right")
+		return 1
+
+
+
+	
+	
+
+func _damage_loop():
+	health = min(max_health, health)
+	if _iframes > 0:
+		_iframes -= 1
+		modulate = Color(255, 0, 0, 1)
+	else:
+		modulate = Color(1, 1, 1, 1)
+		if health <= 0:
+			die()
+			#self._state = States.DEAD
+
+# moved to _on_hit
+#	for body in $Hitbox.get_overlapping_bodies():
+#		if body.is_in_group("enemies") or body.is_in_group("projectiles"):
+#			if _iframes == 0:
+#				if body.get("on_hit_dmg") != null and body.on_hit_dmg != 0:
+#					self.health -= body.on_hit_dmg
+#					_iframes = 10
+#				elif body.get("damage") != null and body.damage != 0:
+#					self.health -= body.damage
+#					_iframes = 10
+
+#func _on_health_change():
+#	if health <= 0:
+#		die()
+#		#self._state = States.DEAD
+		
+#	$Label.text = "Health: " + str(health)
+
+func take_damage(damage):
+	health -= damage
+	if has_node("HurtSFX"):
+		var hurt_sfx_count : int = get_node("HurtSFX").get_child_count()
+		var rnd_hurt_sfx : int = randi() % hurt_sfx_count
+		var rnd_audio_player : AudioStreamPlayer2D = get_node("HurtSFX").get_child(rnd_hurt_sfx)
+		if is_instance_valid(rnd_audio_player):
+			rnd_audio_player.play()
+	flash_red()
+	if health <= 0:
+		die()
+
+func flash_red():
+	var node_to_colorize
+	node_to_colorize = $Sprite
+	
+
+	var tween = get_node("Tween")
+	tween.interpolate_property(node_to_colorize, "modulate",
+			Color.red, Color.white, .25,
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+
+
+# moved all the set get health signaling stuff to _on_hit
+#func _set_health(new_health : float):
+#	if new_health != health:
+#		health = new_health
+#		#emit_signal("health_changed")
+
+func die():
+	print("GAME OVER")
+#	if has_node("DeathSFX"):
+#		var death_sfx_count : int = get_node("DeathSFX").get_child_count()
+#		var rnd_death_sfx : int = randi() % death_sfx_count
+#		var rnd_audio_player : AudioStreamPlayer2D = get_node("DeathSFX").get_child(rnd_death_sfx)
+#		if is_instance_valid(rnd_audio_player):
+#			rnd_audio_player.play()
+	var _err = connect("level_requested", global.main_scene, "_on_level_requested")
+	if _err: push_warning(_err)
+	emit_signal("level_requested", "res://Levels/RIPFriederich.tscn")
+	disconnect("level_requested", global.main_scene, "_on_level_requested")
+
+	queue_free()
+
+func _set_state(new_state : int):
+	if _state != new_state:
+		_state = new_state
+		if new_state == States.DEAD:
+			die()
+		elif new_state == States.IDLE:
+			velocity = Vector2.ZERO
+		elif new_state == States.WALKING:
+			$FootstepPauseTimer.set_wait_time(walking_footstep_frequency)
+		elif new_state == States.RUNNING:
+			$FootstepPauseTimer.set_wait_time(running_footstep_frequency)
+
+
+func _on_NPC_started_chatting():
+	_state = States.CHATTING
+	
+func _on_NPC_stopped_chatting():
+	_state = States.IDLE
+
+
+func _on_hit(damage):
+	$ImmunityTimer.start()
+	if not temp_immunity_active:
+		temp_immunity_active = true
+		take_damage(damage)
+	
+
+
+func _on_FootstepPauseTimer_timeout():
+	if _state == States.WALKING and velocity != Vector2.ZERO:
+		play_random_step_sfx(false)
+	elif _state == States.RUNNING and velocity != Vector2.ZERO:
+		play_random_step_sfx(true)
+	
+
+func _on_ImmunityTimer_timeout():
+	temp_immunity_active = false
+
+func _on_key_picked_up(item_name):
+	keys_held[item_name] = true
+
+func unlock():
+	return keys_held
+
+func _on_NPC_follower_acquired(NPC_node):
+	NPCFollowers.push_back(NPC_node)

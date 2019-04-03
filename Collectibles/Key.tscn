@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Collectibles/Key.gd" type="Script" id=1]
+[ext_resource path="res://Collectibles/key.png" type="Texture" id=2]
+
+[sub_resource type="RectangleShape2D" id=6]
+extents = Vector2( 17.1246, 16.9786 )
+
+[node name="Key" type="Area2D"]
+position = Vector2( 861.872, 504.6 )
+script = ExtResource( 1 )
+key_name = "brass"
+
+[node name="Sprite" type="Sprite" parent="."]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 6 )
+
+[connection signal="body_entered" from="." to="." method="_on_Key_body_entered"]

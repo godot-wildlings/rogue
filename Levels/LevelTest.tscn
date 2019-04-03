@@ -1,0 +1,107 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Levels/Level.gd" type="Script" id=1]
+[ext_resource path="res://Scenery/Bricks23_col-s.jpg" type="Texture" id=2]
+[ext_resource path="res://Scenery/Bricks23_nrm-s.jpg" type="Texture" id=3]
+[ext_resource path="res://Collectibles/Cage.tscn" type="PackedScene" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Collectibles/Key.tscn" type="PackedScene" id=7]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 514, 32.8481 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 33.2795, 319.47 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 15.4243, 16.0314 )
+
+[node name="LevelTest" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Walls" type="Node2D" parent="."]
+editor/display_folded = true
+
+[node name="TopWall" type="StaticBody2D" parent="Walls"]
+position = Vector2( 511, 0 )
+
+[node name="WallSprite" type="Sprite" parent="Walls/TopWall"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+normal_map = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 2048, 128 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/TopWall"]
+shape = SubResource( 1 )
+
+[node name="BottomWall" type="StaticBody2D" parent="Walls"]
+position = Vector2( 511, 590 )
+
+[node name="WallSprite" type="Sprite" parent="Walls/BottomWall"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+normal_map = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 2048, 128 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/BottomWall"]
+shape = SubResource( 1 )
+
+[node name="LeftWall" type="StaticBody2D" parent="Walls"]
+position = Vector2( 1.22774, 290.974 )
+
+[node name="Sprite" type="Sprite" parent="Walls/LeftWall"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+normal_map = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 1280 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/LeftWall"]
+shape = SubResource( 2 )
+
+[node name="RightWall" type="StaticBody2D" parent="Walls"]
+position = Vector2( 1018.31, 287.097 )
+
+[node name="Sprite" type="Sprite" parent="Walls/RightWall"]
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 2 )
+normal_map = ExtResource( 3 )
+region_enabled = true
+region_rect = Rect2( 0, 0, 128, 1280 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/RightWall"]
+shape = SubResource( 2 )
+
+[node name="Cage" parent="." instance=ExtResource( 4 )]
+
+[node name="Enemy" type="KinematicBody2D" parent="."]
+position = Vector2( 603.158, 135.789 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
+shape = SubResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="Enemy"]
+modulate = Color( 0.160784, 0.0705882, 0.0705882, 1 )
+scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 5 )
+
+[node name="Player" parent="." instance=ExtResource( 6 )]
+position = Vector2( 594, 393 )
+
+[node name="Key" parent="." instance=ExtResource( 7 )]
+
+[node name="FreeNPCs" type="Node2D" parent="."]
+
+[node name="Cage2" parent="." instance=ExtResource( 4 )]
+modulate = Color( 0.568627, 0.152941, 0.152941, 1 )
+position = Vector2( 812.688, 194.126 )
+key_name = "iron"
+
+[node name="Key2" parent="." instance=ExtResource( 7 )]
+modulate = Color( 0.568627, 0.152941, 0.152941, 1 )
+position = Vector2( 202.09, 478.753 )
+key_name = "iron"
+

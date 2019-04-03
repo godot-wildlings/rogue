@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenery/Cage.gd" type="Script" id=1]
+[ext_resource path="res://Scenery/cage.png" type="Texture" id=2]
+[ext_resource path="res://Characters/NPCWingman1.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Effects/buzzer.wav" type="AudioStream" id=4]
+[ext_resource path="res://Effects/kaching.wav" type="AudioStream" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 48.0752, 46.9234 )
+
+[node name="Cage" type="Area2D"]
+position = Vector2( 196.438, 162.837 )
+script = ExtResource( 1 )
+key_name = "brass"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Sprite" type="Sprite" parent="."]
+self_modulate = Color( 1, 1, 1, 0.521569 )
+position = Vector2( 0, 0.307373 )
+scale = Vector2( 0.33, 0.33 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+margin_left = -113.311
+margin_top = 40.1396
+margin_right = 149.689
+margin_bottom = 105.14
+text = "When you unlock the cage, the
+trapped NPC becomes a wingman.
+They follow and shoot (and take damage).
+Press Z to switch Primary Characters"
+align = 1
+
+[node name="CaptiveNPCs" type="Node2D" parent="."]
+
+[node name="NPCWingman1" parent="CaptiveNPCs" instance=ExtResource( 3 )]
+
+[node name="buzzer" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( -196.438, -162.837 )
+stream = ExtResource( 4 )
+volume_db = 13.126
+
+[node name="ding" type="AudioStreamPlayer2D" parent="."]
+position = Vector2( -196.438, -162.837 )
+stream = ExtResource( 5 )
+
+[connection signal="body_entered" from="." to="." method="_on_Cage_body_entered"]

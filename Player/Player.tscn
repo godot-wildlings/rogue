@@ -1,0 +1,157 @@
+[gd_scene load_steps=22 format=2]
+
+[ext_resource path="res://Player/Player.gd" type="Script" id=1]
+[ext_resource path="res://Player/IdleNoHands.png" type="Texture" id=2]
+[ext_resource path="res://Player/WeaponSlots.gd" type="Script" id=3]
+[ext_resource path="res://Weapons/Ranged/Bow/Bow.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Weapons/Ranged/Fireballs/FireCaster.tscn" type="PackedScene" id=5]
+[ext_resource path="res://GUI/Camera2D.gd" type="Script" id=6]
+[ext_resource path="res://Player/player_holding_bow.anim" type="Animation" id=7]
+[ext_resource path="res://Player/player_idle.anim" type="Animation" id=8]
+[ext_resource path="res://Player/player_run.anim" type="Animation" id=9]
+[ext_resource path="res://Player/player_walk.anim" type="Animation" id=10]
+[ext_resource path="res://Player/HealthBar.gd" type="Script" id=11]
+[ext_resource path="res://Player/ProgressBarHealth.gd" type="Script" id=12]
+[ext_resource path="res://Effects/Enemies_Hurt_1.wav" type="AudioStream" id=13]
+[ext_resource path="res://Effects/Enemies_Die_1.wav" type="AudioStream" id=14]
+[ext_resource path="res://Effects/Step_Cave.wav" type="AudioStream" id=15]
+
+[sub_resource type="CapsuleShape2D" id=1]
+height = 0.704163
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 11.0
+height = 25.8427
+
+[sub_resource type="Animation" id=3]
+resource_name = "demon_idle"
+step = 0.05
+
+[sub_resource type="Animation" id=4]
+resource_name = "demon_walk"
+length = 0.8
+loop = true
+step = 0.05
+
+[sub_resource type="StyleBoxTexture" id=6]
+region_rect = Rect2( 0, 0, 64, 10 )
+
+[sub_resource type="StyleBoxTexture" id=7]
+region_rect = Rect2( 0, 0, 64, 10 )
+
+[node name="Player" type="KinematicBody2D"]
+collision_mask = 118
+script = ExtResource( 1 )
+running_footstep_frequency = 0.4
+walking_footstep_frequency = 0.8
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 2 )
+hframes = 2
+frame = 1
+
+[node name="WeaponSlots" type="Node2D" parent="Sprite"]
+position = Vector2( -5.20417, -8.03871 )
+script = ExtResource( 3 )
+
+[node name="Melee" type="Node2D" parent="Sprite/WeaponSlots"]
+
+[node name="Ranged" type="Node2D" parent="Sprite/WeaponSlots"]
+position = Vector2( 0.0720634, 0.0526905 )
+
+[node name="Bow" parent="Sprite/WeaponSlots/Ranged" instance=ExtResource( 4 )]
+position = Vector2( 0.0181408, 0.0224743 )
+
+[node name="FireCaster" parent="Sprite/WeaponSlots/Ranged" instance=ExtResource( 5 )]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+position = Vector2( -0.715149, 15.3359 )
+shape = SubResource( 1 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+drag_margin_left = 0.0
+drag_margin_top = 0.0
+drag_margin_right = 0.0
+drag_margin_bottom = 0.0
+script = ExtResource( 6 )
+
+[node name="Hitbox" type="Area2D" parent="."]
+visible = false
+collision_mask = 48
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2( -0.498249, 0.498251 )
+shape = SubResource( 2 )
+
+[node name="Label" type="Label" parent="."]
+visible = false
+margin_left = -27.824
+margin_top = -67.9423
+margin_right = 26.176
+margin_bottom = -47.9423
+text = "Health: 3"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "demon_walk"
+anims/demon_idle = SubResource( 3 )
+anims/demon_walk = SubResource( 4 )
+anims/player_holding_bow = ExtResource( 7 )
+anims/player_idle = ExtResource( 8 )
+anims/player_run = ExtResource( 9 )
+anims/player_walk = ExtResource( 10 )
+
+[node name="Health" type="Node2D" parent="."]
+position = Vector2( -1.46303, -12.1919 )
+scale = Vector2( 0.33, 0.33 )
+
+[node name="HealthBar" type="TextureProgress" parent="Health"]
+visible = false
+margin_left = -43.2958
+margin_top = -150.324
+margin_right = 84.7042
+margin_bottom = -134.324
+value = 100.0
+script = ExtResource( 11 )
+
+[node name="ProgressBar" type="ProgressBar" parent="Health"]
+margin_left = -53.6012
+margin_top = -144.756
+margin_right = 63.3988
+margin_bottom = -130.756
+custom_styles/fg = SubResource( 6 )
+custom_styles/bg = SubResource( 7 )
+value = 50.0
+percent_visible = false
+script = ExtResource( 12 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="HurtSFX" type="Node2D" parent="."]
+
+[node name="HurtNoise" type="AudioStreamPlayer2D" parent="HurtSFX"]
+stream = ExtResource( 13 )
+volume_db = -9.0
+
+[node name="DeathSFX" type="Node2D" parent="."]
+
+[node name="DeathNoise" type="AudioStreamPlayer2D" parent="DeathSFX"]
+stream = ExtResource( 14 )
+volume_db = -9.0
+
+[node name="StepSFX" type="Node2D" parent="."]
+
+[node name="StepSoundsCave" type="AudioStreamPlayer2D" parent="StepSFX"]
+stream = ExtResource( 15 )
+volume_db = -9.0
+
+[node name="FootstepPauseTimer" type="Timer" parent="."]
+wait_time = 0.2
+autostart = true
+
+[node name="ImmunityTimer" type="Timer" parent="."]
+wait_time = 0.1
+
+[connection signal="timeout" from="FootstepPauseTimer" to="." method="_on_FootstepPauseTimer_timeout"]
+[connection signal="timeout" from="ImmunityTimer" to="." method="_on_ImmunityTimer_timeout"]
