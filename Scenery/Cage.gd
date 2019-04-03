@@ -3,7 +3,7 @@ extends Area2D
 # Declare member variables here. Examples:
 
 export var key_name : String
-signal unlocked()
+signal unlocked(byWho)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -14,8 +14,8 @@ func _ready():
 #func _process(delta):
 #	pass
 
-func die():
-	emit_signal("unlocked")
+func die(byWho):
+	emit_signal("unlocked", byWho)
 	for NPC in $CaptiveNPCs.get_children():
 		$CaptiveNPCs.remove_child(NPC)
 		$"../FreeNPCs".add_child(NPC)
@@ -33,6 +33,6 @@ func _on_Cage_body_entered(body):
 					correct_key = true
 					$ding.play()
 					yield(get_tree().create_timer(0.6), "timeout")
-					die()
+					die(body)
 			if correct_key == false:
 				$buzzer.play()

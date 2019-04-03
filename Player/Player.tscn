@@ -33,14 +33,13 @@ length = 0.8
 loop = true
 step = 0.05
 
+[sub_resource type="StyleBoxTexture" id=5]
+region_rect = Rect2( 0, 0, 64, 10 )
+
 [sub_resource type="StyleBoxTexture" id=6]
 region_rect = Rect2( 0, 0, 64, 10 )
 
-[sub_resource type="StyleBoxTexture" id=7]
-region_rect = Rect2( 0, 0, 64, 10 )
-
 [node name="Player" type="KinematicBody2D"]
-collision_mask = 118
 script = ExtResource( 1 )
 running_footstep_frequency = 0.4
 walking_footstep_frequency = 0.8
@@ -65,7 +64,6 @@ position = Vector2( 0.0181408, 0.0224743 )
 [node name="FireCaster" parent="Sprite/WeaponSlots/Ranged" instance=ExtResource( 5 )]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 position = Vector2( -0.715149, 15.3359 )
 shape = SubResource( 1 )
 
@@ -77,11 +75,11 @@ drag_margin_right = 0.0
 drag_margin_bottom = 0.0
 script = ExtResource( 6 )
 
-[node name="Hitbox" type="Area2D" parent="."]
-visible = false
-collision_mask = 48
+[node name="PlayerHitbox" type="Area2D" parent="." groups=[
+"player",
+]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerHitbox"]
 position = Vector2( -0.498249, 0.498251 )
 shape = SubResource( 2 )
 
@@ -120,8 +118,8 @@ margin_left = -53.6012
 margin_top = -144.756
 margin_right = 63.3988
 margin_bottom = -130.756
-custom_styles/fg = SubResource( 6 )
-custom_styles/bg = SubResource( 7 )
+custom_styles/fg = SubResource( 5 )
+custom_styles/bg = SubResource( 6 )
 value = 50.0
 percent_visible = false
 script = ExtResource( 12 )

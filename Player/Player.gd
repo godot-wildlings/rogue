@@ -251,9 +251,6 @@ func get_direction_hack():
 
 
 
-	
-	
-
 func _damage_loop():
 	health = min(max_health, health)
 	if _iframes > 0:
@@ -263,25 +260,7 @@ func _damage_loop():
 		modulate = Color(1, 1, 1, 1)
 		if health <= 0:
 			die()
-			#self._state = States.DEAD
 
-# moved to _on_hit
-#	for body in $Hitbox.get_overlapping_bodies():
-#		if body.is_in_group("enemies") or body.is_in_group("projectiles"):
-#			if _iframes == 0:
-#				if body.get("on_hit_dmg") != null and body.on_hit_dmg != 0:
-#					self.health -= body.on_hit_dmg
-#					_iframes = 10
-#				elif body.get("damage") != null and body.damage != 0:
-#					self.health -= body.damage
-#					_iframes = 10
-
-#func _on_health_change():
-#	if health <= 0:
-#		die()
-#		#self._state = States.DEAD
-		
-#	$Label.text = "Health: " + str(health)
 
 func take_damage(damage):
 	health -= damage

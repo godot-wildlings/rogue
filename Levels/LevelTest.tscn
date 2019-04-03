@@ -14,7 +14,7 @@ extents = Vector2( 514, 32.8481 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 33.2795, 319.47 )
 
-[sub_resource type="RectangleShape2D" id=5]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 15.4243, 16.0314 )
 
 [node name="LevelTest" type="Node2D"]
@@ -81,7 +81,7 @@ shape = SubResource( 2 )
 position = Vector2( 603.158, 135.789 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy"]
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="Sprite" type="Sprite" parent="Enemy"]
 modulate = Color( 0.160784, 0.0705882, 0.0705882, 1 )
