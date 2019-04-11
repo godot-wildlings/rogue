@@ -135,3 +135,6 @@ func check_ground() -> bool:
 	if $down_left.is_colliding() or $down_right.is_colliding():
 		return true
 	return false
+
+func on_collide_player():
+	print("THIS IS A DAMAGE MESSAGE")

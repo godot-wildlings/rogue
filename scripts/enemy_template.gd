@@ -6,6 +6,7 @@ extends KinematicBody2D
 
 onready var raycast_group_walls = $Raycasts_walls
 onready var raycast_group_corners = $Raycasts_corners
+onready var raycast_group_collide_player = $Raycasts_collide_player
 
 export var debug : bool = false
 
