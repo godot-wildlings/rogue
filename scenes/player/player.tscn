@@ -26,12 +26,12 @@ debug = true
 
 [node name="player" type="Sprite" parent="rotate"]
 texture = ExtResource( 2 )
-offset = Vector2( 0, -4 )
-vframes = 13
-frame = 9
+offset = Vector2( 0, -5 )
+vframes = 10
+frame = 6
 
 [node name="eyes" type="Sprite" parent="rotate"]
-position = Vector2( 0, -3 )
+position = Vector2( 0, -2 )
 texture = ExtResource( 3 )
 hframes = 2
 
@@ -40,21 +40,22 @@ autoplay = "cycle"
 anims/cycle = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2( 0, 4 )
+position = Vector2( 0, 3 )
 shape = SubResource( 1 )
 
 [node name="down_left" type="RayCast2D" parent="."]
-position = Vector2( -4, 12 )
+position = Vector2( -4, 11 )
 enabled = true
 cast_to = Vector2( 0, 2 )
 collision_mask = 2
+collide_with_areas = true
 
 [node name="down_right" type="RayCast2D" parent="."]
-position = Vector2( 4, 12 )
+position = Vector2( 4, 11 )
 enabled = true
 cast_to = Vector2( 0, 2 )
 collision_mask = 2
+collide_with_areas = true
 
 [node name="crossbow" parent="." instance=ExtResource( 5 )]
 visible = false
@@ -65,6 +66,7 @@ anims/idle = ExtResource( 6 )
 anims/run = ExtResource( 7 )
 
 [node name="states" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="idle" type="Node" parent="states"]
 script = ExtResource( 8 )
