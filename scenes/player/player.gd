@@ -59,7 +59,7 @@ func _physics_process(delta : float) -> void:
 	# update animations
 	if anim_nxt != anim_cur:
 		anim_cur = anim_nxt
-		#$anim.play( anim_cur )
+		$anim.play( anim_cur )
 
 
 func _aim_weapon(delta : float) -> void:
