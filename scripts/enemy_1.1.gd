@@ -24,4 +24,4 @@ func _physics_process(delta):
 
 func connect_to_player():
 	
-	self.connect("collide_player", global.player, "on_collide_player")
+	self.connect("collide_player", game.player, "on_collide_player")
