@@ -30,8 +30,8 @@ position = Vector2( 768, 212 )
 [node name="parallax_02" parent="." instance=ExtResource( 4 )]
 
 [node name="enemy_template" parent="." instance=ExtResource( 5 )]
-position = Vector2( 189.075, 157.563 )
+position = Vector2( 120.397, 139.827 )
 
 [node name="enemy_1" parent="." instance=ExtResource( 6 )]
-position = Vector2( 80, 153 )
+position = Vector2( 96.9809, 139.793 )
 
