@@ -27,3 +27,36 @@ position = Vector2( 768, 212 )
 
 [node name="parallax_02" parent="." instance=ExtResource( 4 )]
 
+[node name="Labels" type="Node" parent="."]
+
+[node name="LeftRightLabel" type="Label" parent="Labels"]
+margin_left = 1.08073
+margin_top = 71.3278
+margin_right = 108.081
+margin_bottom = 119.328
+text = "<- LEFT/RIGHT ->
+A / D"
+align = 1
+valign = 1
+
+[node name="JumpLabel" type="Label" parent="Labels"]
+margin_left = 80.3253
+margin_top = 107.177
+margin_right = 187.325
+margin_bottom = 155.177
+text = "W / SPACE
+TO JUMP"
+align = 1
+valign = 1
+
+[node name="DoubleJumpLabel" type="Label" parent="Labels"]
+margin_left = 205.607
+margin_top = 44.1582
+margin_right = 312.607
+margin_bottom = 92.1582
+text = "JUMP AGAIN
+MID AIR TO
+ DOUBLE JUMP"
+align = 1
+valign = 1
+
