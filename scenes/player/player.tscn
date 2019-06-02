@@ -1,18 +1,19 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/player.png" type="Texture" id=2]
 [ext_resource path="res://scenes/player/eyes.png" type="Texture" id=3]
 [ext_resource path="res://scenes/player/animations/eyes_cycle.anim" type="Animation" id=4]
-[ext_resource path="res://scenes/guns/ranged/crossbow/crossbow.tscn" type="PackedScene" id=5]
-[ext_resource path="res://scenes/player/animations/idle.anim" type="Animation" id=6]
-[ext_resource path="res://scenes/player/animations/run.anim" type="Animation" id=7]
-[ext_resource path="res://scenes/player/states/idle.gd" type="Script" id=8]
-[ext_resource path="res://scenes/player/jump.gd" type="Script" id=9]
-[ext_resource path="res://scenes/player/fall.gd" type="Script" id=10]
-[ext_resource path="res://scenes/player/run.gd" type="Script" id=11]
-[ext_resource path="res://scenes/player/double_jump.gd" type="Script" id=12]
-[ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/player/animations/idle.anim" type="Animation" id=5]
+[ext_resource path="res://scenes/player/animations/run.anim" type="Animation" id=6]
+[ext_resource path="res://scenes/player/states/idle.gd" type="Script" id=7]
+[ext_resource path="res://scenes/player/jump.gd" type="Script" id=8]
+[ext_resource path="res://scenes/player/fall.gd" type="Script" id=9]
+[ext_resource path="res://scenes/player/run.gd" type="Script" id=10]
+[ext_resource path="res://scenes/player/double_jump.gd" type="Script" id=11]
+[ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/player/arm.gd" type="Script" id=13]
+[ext_resource path="res://scenes/projectiles/deku_nut/deku_nut.tscn" type="PackedScene" id=14]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
@@ -23,6 +24,7 @@ script = ExtResource( 1 )
 debug = true
 
 [node name="container" type="CenterContainer" parent="."]
+editor/display_folded = true
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
@@ -46,6 +48,7 @@ text = "IDLE"
 valign = 1
 
 [node name="rotate" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="player" type="Sprite" parent="rotate"]
 texture = ExtResource( 2 )
@@ -80,33 +83,36 @@ cast_to = Vector2( 0, 2 )
 collision_mask = 2
 collide_with_areas = true
 
-[node name="crossbow" parent="." instance=ExtResource( 5 )]
-visible = false
-offset = Vector2( -1, 1 )
-
 [node name="anim" type="AnimationPlayer" parent="."]
-anims/idle = ExtResource( 6 )
-anims/run = ExtResource( 7 )
+anims/idle = ExtResource( 5 )
+anims/run = ExtResource( 6 )
 
 [node name="states" type="Node" parent="."]
 editor/display_folded = true
 
 [node name="idle" type="Node" parent="states"]
-script = ExtResource( 8 )
+script = ExtResource( 7 )
 
 [node name="jump" type="Node" parent="states"]
-script = ExtResource( 9 )
+script = ExtResource( 8 )
 
 [node name="fall" type="Node" parent="states"]
-script = ExtResource( 10 )
+script = ExtResource( 9 )
 
 [node name="run" type="Node" parent="states"]
-script = ExtResource( 11 )
+script = ExtResource( 10 )
 
 [node name="double_jump" type="Node" parent="states"]
-script = ExtResource( 12 )
+script = ExtResource( 11 )
 
 [node name="camera_target" type="Node2D" parent="."]
 
-[node name="camera" parent="camera_target" instance=ExtResource( 13 )]
+[node name="camera" parent="camera_target" instance=ExtResource( 12 )]
+
+[node name="arm" type="Node2D" parent="."]
+script = ExtResource( 13 )
+bullet_tscn = ExtResource( 14 )
+
+[node name="fire_position" type="Position2D" parent="arm"]
+position = Vector2( 14.6854, -0.174828 )
 

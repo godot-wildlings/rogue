@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arrow.png-1fbb3b9cacbaa3a046e6aef016ca4716.stex"
+path="res://.import/deku_nut.png-2767b424c4af45d5801c313817a495a5.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://scenes/projectiles/arrow/arrow.png"
-dest_files=[ "res://.import/arrow.png-1fbb3b9cacbaa3a046e6aef016ca4716.stex" ]
+source_file="res://scenes/projectiles/deku_nut/deku_nut.png"
+dest_files=[ "res://.import/deku_nut.png-2767b424c4af45d5801c313817a495a5.stex" ]
 
 [params]
 

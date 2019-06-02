@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 onready var rotate : Node2D = $rotate
-onready var arm : Sprite = $crossbow
+onready var arm : Position2D = $arm
 onready var state_label : Label = $container/state_label
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 
@@ -144,9 +144,9 @@ func check_ground() -> bool:
 	return false
 	
 func running_dust() -> void:
+	if fsm.state_cur != $states/run: return
 	var d : Object = walking_dust_tscn.instance()
 	assert is_instance_valid(d)
-	print(dir_cur)
 	d.position = position + Vector2(-8 * (dir_cur * 1), 0)
 	d.scale.x = dir_cur
 	get_parent().add_child(d)
