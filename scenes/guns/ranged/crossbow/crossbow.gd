@@ -6,7 +6,6 @@ func _ready() -> void:
 func check_fire() -> bool:
 	var space_state = get_world_2d().direct_space_state
 	var result = space_state.intersect_point($fire_position.global_position, 32, [get_parent()], 3 )
-	print(result)
 	if result.empty():
 		return true
 	elif result.size() == 1:

@@ -1,15 +1,14 @@
 extends "res://scripts/state.gd"
 
-
 func initialize(obj : Object) -> void:
 	obj.anim_nxt = "run"
 
-func run( obj, delta ) -> void:
-	if ( obj.vel.x > 0 and obj.rotate.scale.x > 0 ) or \
-		( obj.vel.x < 0 and obj.rotate.scale.x < 0 ):
+func run(obj, delta) -> void:
+	if (obj.vel.x > 0 and obj.rotate.scale.x > 0) or \
+		(obj.vel.x < 0 and obj.rotate.scale.x < 0):
 		obj.anim_nxt = "run"
-	elif ( obj.vel.x > 0 and obj.rotate.scale.x < 0 ) or \
-		( obj.vel.x < 0 and obj.rotate.scale.x > 0 ):
+	elif (obj.vel.x > 0 and obj.rotate.scale.x < 0) or \
+		(obj.vel.x < 0 and obj.rotate.scale.x > 0):
 		obj.anim_nxt = "run_back"
 
 	# gravity
@@ -27,7 +26,7 @@ func run( obj, delta ) -> void:
 		obj.vel.x = lerp(obj.vel.x, obj.MAX_VEL, obj.ACCEL * delta)
 	else:
 		obj.vel.x = lerp(obj.vel.x, 0, obj.DECEL * delta)
-		if abs( obj.vel.x ) < 1:
+		if abs(obj.vel.x) < 1:
 			obj.vel.x = 0
 		else:
 			is_moving = true

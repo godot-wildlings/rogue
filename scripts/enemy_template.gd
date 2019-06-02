@@ -44,7 +44,6 @@ func _physics_process(delta : float) -> void:
 	for child in raycast_group_corners.get_children():
 		if !child.is_colliding():
 			position.y += ACCEL_AIR*delta
-			print(str(position.y))
 	
 #	for child in raycast_group_corners.get_children():
 #

@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/player/animations/dust/running/running_dust.png" type="Texture" id=1]
+[ext_resource path="res://scenes/player/animations/dust/running/cycle.anim" type="Animation" id=2]
+
+[node name="running_dust" type="Sprite"]
+texture = ExtResource( 1 )
+hframes = 5
+frame = 4
+
+[node name="anim" type="AnimationPlayer" parent="."]
+autoplay = "cycle"
+anims/cycle = ExtResource( 2 )
+

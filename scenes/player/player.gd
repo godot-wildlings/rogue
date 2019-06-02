@@ -2,6 +2,8 @@ extends KinematicBody2D
 
 onready var rotate : Node2D = $rotate
 onready var arm : Sprite = $crossbow
+onready var state_label : Label = $container/state_label
+onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 
 export var debug : bool = false
 
@@ -140,6 +142,14 @@ func check_ground() -> bool:
 	if $down_left.is_colliding() or $down_right.is_colliding():
 		return true
 	return false
+	
+func running_dust() -> void:
+	var d : Object = walking_dust_tscn.instance()
+	assert is_instance_valid(d)
+	print(dir_cur)
+	d.position = position + Vector2(-8 * (dir_cur * 1), 0)
+	d.scale.x = dir_cur
+	get_parent().add_child(d)
 
 func on_collide_player():
 	_death()

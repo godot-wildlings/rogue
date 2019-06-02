@@ -31,5 +31,7 @@ func run_machine(delta : float) -> void:
 			print(obj.name, ": starting with state ", state_nxt.name)
 		state_cur = state_nxt
 		state_cur.initialize(obj)
+		assert is_instance_valid(game.player.state_label)
+		game.player.state_label.text = state_cur.name
 	# run state
 	state_cur.run(obj, delta)
