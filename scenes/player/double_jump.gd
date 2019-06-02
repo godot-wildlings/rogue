@@ -1,6 +1,6 @@
 extends "res://scripts/state.gd"
 
-var gravity_timer : int
+var gravity_timer : float
 
 func initialize(obj : Object) -> void:
 	obj.double_jump = true

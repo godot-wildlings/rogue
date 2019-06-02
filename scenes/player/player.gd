@@ -22,21 +22,21 @@ const FIRE_WAITTIME : float = 0.25
 
 var can_aim : bool = true
 var is_firing : bool = false
+#warning-ignore:unused_class_variable
 var is_jumping : bool = false
+#warning-ignore:unused_class_variable
 var double_jump : bool = false
-var is_on_platform : bool = false
 var anim_cur : String = ""
 var anim_nxt : String = ""
 var fsm : Node
-var vel_platform : Vector2 = Vector2()
+
 var vel : Vector2 = Vector2()
-var old_motion : Vector2 = Vector2()
 var mouse_dir : Vector2 = Vector2()
 var arm_dir_nxt : Vector2 = Vector2.RIGHT
 var arm_dir_cur : Vector2 = Vector2.RIGHT
 var dir_cur : int = 1
 var camera_mode : int = 0
-var fire_timer : int = 0
+var fire_timer : float = 0
 var fire_state : int
 
 func _ready()-> void:
@@ -63,7 +63,6 @@ func _physics_process(delta : float) -> void:
 		anim_cur = anim_nxt
 		if $anim.has_animation(anim_cur):
 			$anim.play(anim_cur)
-
 
 func _aim_weapon(delta : float) -> void:
 	if can_aim:
@@ -98,6 +97,9 @@ func _aim_weapon(delta : float) -> void:
 	else:
 		$camera_target.position = $camera_target.position.linear_interpolate( \
 				Vector2(180, mouse_dir.y * 0.5), 1 * delta)
+
+func _death() -> void:
+	get_tree().quit()
 
 func _fire(delta : float) -> void:
 	#			fsm.state_cur != fsm.STATES.interact and \
@@ -140,4 +142,4 @@ func check_ground() -> bool:
 	return false
 
 func on_collide_player():
-	print("THIS IS A DAMAGE MESSAGE")
+	_death()
