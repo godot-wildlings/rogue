@@ -15,7 +15,7 @@
 [ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 8, 8 )
+extents = Vector2( 7, 7 )
 
 [node name="player" type="KinematicBody2D"]
 collision_mask = 6
@@ -28,10 +28,10 @@ debug = true
 texture = ExtResource( 2 )
 offset = Vector2( 0, -5 )
 vframes = 10
-frame = 6
+frame = 2
 
 [node name="eyes" type="Sprite" parent="rotate"]
-position = Vector2( 0, -2 )
+position = Vector2( 0, -7 )
 texture = ExtResource( 3 )
 hframes = 2
 
@@ -40,7 +40,7 @@ autoplay = "cycle"
 anims/cycle = ExtResource( 4 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2( 0, 3 )
+position = Vector2( 0, 4 )
 shape = SubResource( 1 )
 
 [node name="down_left" type="RayCast2D" parent="."]

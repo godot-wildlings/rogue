@@ -45,6 +45,8 @@ func _ready()-> void:
 	fsm = preload( "res://scripts/fsm.gd" ).new(self, $states, $states/idle, debug)
 	
 func _physics_process(delta : float) -> void:
+	if global_position.y > game.WORLD_LIMIT_Y:
+		get_tree().quit()
 	# update states machine
 	fsm.run_machine(delta)
 	# update weapon dir
@@ -59,7 +61,8 @@ func _physics_process(delta : float) -> void:
 	# update animations
 	if anim_nxt != anim_cur:
 		anim_cur = anim_nxt
-		$anim.play(anim_cur)
+		if $anim.has_animation(anim_cur):
+			$anim.play(anim_cur)
 
 
 func _aim_weapon(delta : float) -> void:
