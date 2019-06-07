@@ -17,7 +17,6 @@ func run(obj : Object, delta : float) -> void:
 	
 	if obj.check_ground():
 		if Input.is_action_just_pressed("btn_jump") and not obj.is_jumping:
-			print("jump")
 			obj.fsm.state_nxt = obj.fsm.STATES.jump
 	else:
 		obj.fsm.state_nxt = obj.fsm.STATES.fall

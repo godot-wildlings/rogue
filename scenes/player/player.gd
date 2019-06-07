@@ -6,6 +6,7 @@ onready var state_label : Label = $container/state_label
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 
 export var debug : bool = false
+export var max_health : float = 3
 
 enum FIRE_STATES { FIRE, WAIT }
 
@@ -40,6 +41,7 @@ var dir_cur : int = 1
 var camera_mode : int = 0
 var fire_timer : float = 0
 var fire_state : int
+var current_health : float = max_health setget _set_current_health
 
 func _ready()-> void:
 	game.player = self
@@ -151,5 +153,14 @@ func running_dust() -> void:
 	d.scale.x = dir_cur
 	get_parent().add_child(d)
 
-func on_collide_player():
-	_death()
+func take_damage(damage : float) -> void:
+	print("take_damage")
+	if current_health > 0:
+		self.current_health -= damage
+
+func _set_current_health(new_health) -> void:
+	print("new_health: " + str(new_health))
+	if new_health == 0:
+		_death()
+	else:
+		current_health = new_health

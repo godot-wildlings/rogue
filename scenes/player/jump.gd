@@ -4,7 +4,6 @@ var gravity_timer
 var double_jump_timer
 
 func initialize(obj : Object) -> void:
-	print("jump init")
 	double_jump_timer = 0.1
 	obj.is_jumping = true
 	obj.anim_nxt = "jump"
