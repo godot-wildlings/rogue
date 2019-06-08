@@ -2,11 +2,12 @@ extends Node2D
 
 export var bullet_tscn : PackedScene
 
-func fire(parent : Node, offset : Vector2 = Vector2()) -> void:
+func fire(damage : float, parent : Node, offset : Vector2 = Vector2()) -> void:
 	assert is_instance_valid(bullet_tscn)
 	var b = bullet_tscn.instance()
 	b.global_position = $fire_position.global_position + offset
 	b.bullet_rotation = rotation
+	b.damage = damage
 	parent.add_child(b)
 	
 func check_fire() -> bool:

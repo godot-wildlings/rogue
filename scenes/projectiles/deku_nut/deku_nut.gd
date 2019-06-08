@@ -4,6 +4,7 @@ var bullet_rotation : float = 0
 var vel : int = 400
 var is_colliding : bool = false
 var dir : Vector2 = Vector2()
+var damage : float
 
 func _ready() -> void:
 	dir = Vector2.RIGHT.rotated(bullet_rotation)
@@ -12,13 +13,14 @@ func _ready() -> void:
 func _physics_process(delta : float) -> void:
 	var coldata = move_and_collide(dir * vel * delta)
 	if is_instance_valid(coldata):
+		print(coldata)
 		_collision(coldata)
 		
 func _collision(cdata : KinematicCollision2D) -> void:
 	if is_colliding: return
 	is_colliding = true
-	if cdata.collider.has_method("hit"):
-		cdata.collider.hit(cdata)
+	if cdata.collider.has_method("take_damage"):
+		cdata.collider.take_damage(damage)
 	else:
 		# ToDo: spawn "hit wall tscn" (particle effects)
 		pass
