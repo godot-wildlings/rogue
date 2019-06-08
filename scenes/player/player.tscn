@@ -98,7 +98,7 @@ script = ExtResource( 15 )
 bullet_tscn = ExtResource( 16 )
 
 [node name="fire_position" type="Position2D" parent="arm"]
-position = Vector2( 14.6854, -0.174828 )
+position = Vector2( 20.3014, -0.174828 )
 
 [node name="invincibility_timer" type="Timer" parent="."]
 wait_time = 1.5
