@@ -14,12 +14,19 @@ func _ready() -> void:
 	#warning-ignore:return_value_discarded
 	direction_timer.connect("timeout", self, "_on_direction_timer_timeout")
 	#warning-ignore:return_value_discarded
-	area.connect("body_entered", self, "_on_area_body_entered")
+#	area.connect("body_entered", self, "_on_area_body_entered")
 
 #warning-ignore:unused_argument
 func _process(delta : float) -> void:
 	var velocity : Vector2 = Vector2.ZERO
 	velocity.x = speed * direction
+	velocity.y = min(velocity.y + game.GRAVITY * delta, game.TERMINAL_VELOCITY)
+
+	for body in area.get_overlapping_bodies():
+		assert is_instance_valid(body)
+		if body == game.player:
+			assert body.has_method("take_damage")
+			body.take_damage(damage)
 
 	#warning-ignore:return_value_discarded
 	move_and_slide(velocity)

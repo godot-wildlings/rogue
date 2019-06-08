@@ -2,9 +2,9 @@ extends KinematicBody2D
 
 onready var rotate : Node2D = $rotate
 onready var arm : Position2D = $arm
-onready var state_label : Label = $container/state_label
+onready var invincibility_timer : Timer = $invincibility_timer
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
-
+onready var effecst_anim : AnimationPlayer = $effects_anim
 export var debug : bool = false
 export var max_health : float = 3
 
@@ -24,6 +24,7 @@ const JUMP_MARGIN : float = 0.1
 const FIRE_WAITTIME : float = 0.25
 
 var can_aim : bool = true
+var is_invincible : bool = false
 var is_firing : bool = false
 #warning-ignore:unused_class_variable
 var is_jumping : bool = false
@@ -32,19 +33,20 @@ var double_jump : bool = false
 var anim_cur : String = ""
 var anim_nxt : String = ""
 var fsm : Node
-
 var vel : Vector2 = Vector2()
 var mouse_dir : Vector2 = Vector2()
 var arm_dir_nxt : Vector2 = Vector2.RIGHT
 var arm_dir_cur : Vector2 = Vector2.RIGHT
 var dir_cur : int = 1
+var fire_state : int
 var camera_mode : int = 0
 var fire_timer : float = 0
-var fire_state : int
 var current_health : float = max_health setget _set_current_health
 
-func _ready()-> void:
+func _ready() -> void:
 	game.player = self
+	#warning-ignore:return_value_discarded
+	invincibility_timer.connect("timeout", self, "_on_invincibility_timer_timeout")
 	# Initialize states machine
 	fsm = preload( "res://scripts/fsm.gd" ).new(self, $states, $states/idle, debug)
 	
@@ -154,13 +156,22 @@ func running_dust() -> void:
 	get_parent().add_child(d)
 
 func take_damage(damage : float) -> void:
-	print("take_damage")
-	if current_health > 0:
+	if current_health > 0 and not is_invincible:
+		if debug: print("take_damage")
 		self.current_health -= damage
 
 func _set_current_health(new_health) -> void:
-	print("new_health: " + str(new_health))
+	if debug: print("new_health: " + str(new_health))
 	if new_health == 0:
 		_death()
 	else:
 		current_health = new_health
+		is_invincible = true
+		assert effecst_anim.has_animation("take_damage")
+		effecst_anim.play("take_damage")
+		invincibility_timer.start()
+
+func _on_invincibility_timer_timeout() -> void:
+	is_invincible = false
+	effecst_anim.stop(true)
+	modulate.a = 1
