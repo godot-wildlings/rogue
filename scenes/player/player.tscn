@@ -23,7 +23,7 @@ extents = Vector2( 7, 6 )
 collision_mask = 6
 script = ExtResource( 1 )
 debug = true
-max_health = 6.0
+max_health = 10.0
 
 [node name="rotate" type="Node2D" parent="."]
 editor/display_folded = true

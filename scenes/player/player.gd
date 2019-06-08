@@ -42,6 +42,9 @@ var fire_state : int
 var camera_mode : int = 0
 var fire_timer : float = 0
 var current_health : float = max_health setget _set_current_health
+var UI : CanvasLayer
+
+signal on_health_change(new_health)
 
 func _ready() -> void:
 	game.player = self
@@ -49,7 +52,13 @@ func _ready() -> void:
 	invincibility_timer.connect("timeout", self, "_on_invincibility_timer_timeout")
 	# Initialize states machine
 	fsm = preload( "res://scripts/fsm.gd" ).new(self, $states, $states/idle, debug)
+	call_deferred("_deferred_ready")
 	
+func _deferred_ready() -> void:
+	UI = game.UI
+	connect("on_health_change", UI, "update_health_label")
+	self.current_health = max_health
+
 func _physics_process(delta : float) -> void:
 	if global_position.y > game.WORLD_LIMIT_Y:
 		get_tree().quit()
@@ -159,17 +168,20 @@ func take_damage(damage : float) -> void:
 	if current_health > 0 and not is_invincible:
 		if debug: print("take_damage")
 		self.current_health -= damage
+		is_invincible = true
+		assert effecst_anim.has_animation("take_damage")
+		effecst_anim.play("take_damage")
+		invincibility_timer.start()
+
 
 func _set_current_health(new_health) -> void:
 	if debug: print("new_health: " + str(new_health))
 	if new_health == 0:
 		_death()
 	else:
+		print("health change")
 		current_health = new_health
-		is_invincible = true
-		assert effecst_anim.has_animation("take_damage")
-		effecst_anim.play("take_damage")
-		invincibility_timer.start()
+		emit_signal("on_health_change", current_health)
 
 func _on_invincibility_timer_timeout() -> void:
 	is_invincible = false
