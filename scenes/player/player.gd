@@ -144,7 +144,7 @@ func _fire(delta : float) -> void:
 				# fire animation
 				#arm.get_node( "armanim" ).play( "fire" )
 				# next state
-				fire_timer = FIRE_WAITTIME
+				fire_timer = FIRE_WAITTIME / stats.attack_speed
 				fire_state = FIRE_STATES.WAIT
 				# sfx
 				#$mplayer.mplay( preload( "res://sfx/player_shoot.wav" ) )
