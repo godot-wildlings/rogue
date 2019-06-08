@@ -13,3 +13,5 @@ var player : KinematicBody2D
 var camera : Camera2D
 #warning-ignore:unused_class_variable
 var control_type : int = CONTROL_TYPE.CONTROL_MOUSE#CONTROL_TYPE.CONTROL_GAMEPAD#
+#warning-ignore:unused_class_variable
+var UI : CanvasLayer
