@@ -5,6 +5,7 @@ onready var arm : Position2D = $arm
 onready var invincibility_timer : Timer = $invincibility_timer
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 onready var effecst_anim : AnimationPlayer = $effects_anim
+onready var stats : Node = $stats
 export var debug : bool = false
 export var max_health : float = 3
 
@@ -47,6 +48,7 @@ var UI : CanvasLayer
 signal on_health_change(new_health)
 
 func _ready() -> void:
+	assert is_instance_valid(stats)
 	game.player = self
 	#warning-ignore:return_value_discarded
 	invincibility_timer.connect("timeout", self, "_on_invincibility_timer_timeout")
@@ -138,7 +140,7 @@ func _fire(delta : float) -> void:
 #				n.position = arm.get_node( "fire_position" ).position + roffset
 #				arm.add_child( n )
 				# instance bullet
-				arm.fire(get_parent(), roffset)
+				arm.fire(stats.damage, get_parent(), roffset)
 				# fire animation
 				#arm.get_node( "armanim" ).play( "fire" )
 				# next state
@@ -173,13 +175,11 @@ func take_damage(damage : float) -> void:
 		effecst_anim.play("take_damage")
 		invincibility_timer.start()
 
-
 func _set_current_health(new_health) -> void:
 	if debug: print("new_health: " + str(new_health))
-	if new_health == 0:
+	if new_health <= 0:
 		_death()
 	else:
-		print("health change")
 		current_health = new_health
 		emit_signal("on_health_change", current_health)
 
