@@ -2,18 +2,21 @@ extends KinematicBody2D
 
 onready var direction_timer : Timer = $direction_timer
 onready var area : Area2D = $area
+onready var anim : AnimationPlayer = $anim
 
 export var debug : bool = false
 export var speed : float = 100
 export var damage : float = 1.5
 export var max_health : float = 5
-var health : float = max_health setget _set_health
 
+var health : float = max_health setget _set_health
 var direction : int = -1
 
 func _ready() -> void:
 	assert is_instance_valid(direction_timer)
 	assert is_instance_valid(area)
+	assert is_instance_valid(anim)
+	assert anim.has_animation("take_damage")
 	#warning-ignore:return_value_discarded
 	direction_timer.connect("timeout", self, "_on_direction_timer_timeout")
 
@@ -49,3 +52,4 @@ func take_damage(damage : float) -> void:
 	if debug: print("take_damage : " + str(damage))
 	if health > 0:
 		self.health -= damage
+		anim.play("take_damage")
