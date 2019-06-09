@@ -21,9 +21,8 @@ flip_h = true
 [node name="collision" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
 
-[node name="visible" type="VisibilityNotifier2D" parent="."]
+[node name="visibility_notifier" type="VisibilityNotifier2D" parent="."]
 position = Vector2( 3.6875, 10.656 )
 scale = Vector2( 1.46457, 1.41811 )
 rect = Rect2( -5, -10, 5, 5 )
 
-[connection signal="screen_exited" from="visible" to="." method="_on_visible_screen_exited"]

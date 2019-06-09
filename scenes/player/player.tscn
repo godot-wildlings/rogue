@@ -23,7 +23,7 @@ extents = Vector2( 7, 6 )
 [node name="player" type="KinematicBody2D"]
 collision_mask = 6
 script = ExtResource( 1 )
-max_health = 10.0
+max_health = 5.0
 
 [node name="stats" type="Node" parent="."]
 script = ExtResource( 2 )

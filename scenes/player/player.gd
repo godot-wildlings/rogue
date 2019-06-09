@@ -124,7 +124,7 @@ func _fire(delta : float) -> void:
 #			fsm.state_cur != fsm.STATES.hit and \
 #			fsm.state_nxt != fsm.STATES.hit and \
 	if not is_firing and \
-			Input.is_action_just_pressed("btn_fire") and\
+			Input.is_action_pressed("btn_fire") and\
 			arm.check_fire():
 		is_firing = true
 		fire_state = FIRE_STATES.FIRE
