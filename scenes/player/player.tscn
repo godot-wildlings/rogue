@@ -29,7 +29,6 @@ max_health = 5.0
 script = ExtResource( 2 )
 
 [node name="rotate" type="Node2D" parent="."]
-editor/display_folded = true
 
 [node name="player" type="Sprite" parent="rotate"]
 texture = ExtResource( 3 )

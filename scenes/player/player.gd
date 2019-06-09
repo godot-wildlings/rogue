@@ -4,6 +4,8 @@ onready var rotate : Node2D = $rotate
 onready var arm : Position2D = $arm
 onready var invincibility_timer : Timer = $invincibility_timer
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
+onready var jumping_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/jumping/jumping_dust.tscn")
+
 onready var effecst_anim : AnimationPlayer = $effects_anim
 onready var stats : Node = $stats
 export var debug : bool = false
@@ -160,11 +162,18 @@ func check_ground() -> bool:
 	
 func running_dust() -> void:
 	if fsm.state_cur != $states/run: return
-	var d : Object = walking_dust_tscn.instance()
-	assert is_instance_valid(d)
-	d.position = position + Vector2(-8 * (dir_cur * 1), 0)
-	d.scale.x = dir_cur
-	get_parent().add_child(d)
+	var dust : Object = walking_dust_tscn.instance()
+	assert is_instance_valid(dust)
+	dust.position = position + Vector2(-8 * (dir_cur * 1), 0)
+	dust.scale.x = dir_cur
+	get_parent().add_child(dust)
+
+func jumping_dust() -> void:
+	if fsm.state_cur != $states/jump and fsm.state_cur != $states/double_jump: return
+	var dust : Object = jumping_dust_tscn.instance()
+	dust.position = Vector2(position.x, position.y + dust.position.y)
+	dust.scale.x = dir_cur
+	get_parent().add_child(dust)
 
 func take_damage(damage : float) -> void:
 	if current_health > 0 and not is_invincible:

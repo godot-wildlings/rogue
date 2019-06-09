@@ -9,7 +9,7 @@ func initialize(obj : Object) -> void:
 	obj.anim_nxt = "jump"
 	obj.vel.y = -obj.JUMP_VEL
 	gravity_timer = obj.JUMP_MAXTIME
-	#obj.dust_jump()
+	obj.jumping_dust()
 	#obj.jump()
 
 func run(obj : Object, delta : float) -> void:

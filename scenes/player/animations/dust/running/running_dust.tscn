@@ -4,11 +4,13 @@
 [ext_resource path="res://scenes/player/animations/dust/running/cycle.anim" type="Animation" id=2]
 
 [node name="running_dust" type="Sprite"]
+position = Vector2( 0, -8 )
 texture = ExtResource( 1 )
 hframes = 5
 frame = 4
 
 [node name="anim" type="AnimationPlayer" parent="."]
 autoplay = "cycle"
+playback_speed = 2.0
 anims/cycle = ExtResource( 2 )
 
