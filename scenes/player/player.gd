@@ -6,6 +6,10 @@ onready var invincibility_timer : Timer = $invincibility_timer
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 onready var jumping_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/jumping/jumping_dust.tscn")
 onready var landing_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/landing/landing_dust.tscn")
+#warning-ignore:unused_class_variable
+onready var sfx_container : Node = $sfx_container
+onready var jump_sfx_container : Node = $sfx_container/jump_sfx
+
 
 onready var effecst_anim : AnimationPlayer = $effects_anim
 onready var stats : Node = $stats
@@ -61,6 +65,7 @@ func _ready() -> void:
 	
 func _deferred_ready() -> void:
 	UI = game.UI
+	#warning-ignore:return_value_discarded
 	connect("on_health_change", UI, "update_health_label")
 	self.current_health = max_health
 
@@ -181,6 +186,10 @@ func jumping_dust() -> void:
 	dust.position = Vector2(position.x, position.y + dust.position.y)
 	dust.scale.x = dir_cur
 	get_parent().add_child(dust)
+
+func jump() -> void:
+	assert is_instance_valid(jump_sfx_container)
+	game.play_random_sfx(jump_sfx_container)
 
 func take_damage(damage : float) -> void:
 	if current_health > 0 and not is_invincible:

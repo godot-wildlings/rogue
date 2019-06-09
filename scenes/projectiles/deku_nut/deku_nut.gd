@@ -21,7 +21,7 @@ func _physics_process(delta : float) -> void:
 	if is_instance_valid(coldata):
 		print(coldata)
 		_collision(coldata)
-		
+
 func _collision(collision_data : KinematicCollision2D) -> void:
 	if is_colliding: return
 	is_colliding = true

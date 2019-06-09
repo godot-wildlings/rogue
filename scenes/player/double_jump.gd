@@ -8,7 +8,7 @@ func initialize(obj : Object) -> void:
 	obj.vel.y = -obj.JUMP_VEL
 	gravity_timer = obj.JUMP_MAXTIME
 	obj.jumping_dust()
-
+	obj.jump()
 
 func run(obj : Object, delta : float) -> void:
 	if gravity_timer > 0:

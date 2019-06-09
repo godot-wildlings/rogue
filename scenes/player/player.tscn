@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/stats.gd" type="Script" id=2]
@@ -16,6 +16,9 @@
 [ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/player/arm.gd" type="Script" id=15]
 [ext_resource path="res://scenes/projectiles/deku_nut/deku_nut.tscn" type="PackedScene" id=16]
+[ext_resource path="res://sfx/Jump2.wav" type="AudioStream" id=17]
+[ext_resource path="res://sfx/Jump3.wav" type="AudioStream" id=18]
+[ext_resource path="res://sfx/Jump4.wav" type="AudioStream" id=19]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
@@ -29,6 +32,7 @@ max_health = 5.0
 script = ExtResource( 2 )
 
 [node name="rotate" type="Node2D" parent="."]
+editor/display_folded = true
 
 [node name="player" type="Sprite" parent="rotate"]
 texture = ExtResource( 3 )
@@ -71,6 +75,7 @@ anims/run = ExtResource( 7 )
 anims/take_damage = ExtResource( 8 )
 
 [node name="states" type="Node" parent="."]
+editor/display_folded = true
 
 [node name="idle" type="Node" parent="states"]
 script = ExtResource( 9 )
@@ -92,12 +97,29 @@ script = ExtResource( 13 )
 [node name="camera" parent="camera_target" instance=ExtResource( 14 )]
 
 [node name="arm" type="Node2D" parent="."]
+editor/display_folded = true
 script = ExtResource( 15 )
 bullet_tscn = ExtResource( 16 )
 
 [node name="fire_position" type="Position2D" parent="arm"]
-position = Vector2( 20.3014, -0.174828 )
+position = Vector2( 20, 2 )
 
 [node name="invincibility_timer" type="Timer" parent="."]
 wait_time = 1.5
+
+[node name="sfx_container" type="Node" parent="."]
+
+[node name="jump_sfx" type="Node" parent="sfx_container"]
+
+[node name="jump_sfx_1" type="AudioStreamPlayer" parent="sfx_container/jump_sfx"]
+stream = ExtResource( 17 )
+bus = "sfx"
+
+[node name="jump_sfx_2" type="AudioStreamPlayer" parent="sfx_container/jump_sfx"]
+stream = ExtResource( 18 )
+bus = "sfx"
+
+[node name="jump_sfx_3" type="AudioStreamPlayer" parent="sfx_container/jump_sfx"]
+stream = ExtResource( 19 )
+bus = "sfx"
 
