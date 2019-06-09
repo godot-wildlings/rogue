@@ -5,6 +5,7 @@ onready var arm : Position2D = $arm
 onready var invincibility_timer : Timer = $invincibility_timer
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 onready var jumping_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/jumping/jumping_dust.tscn")
+onready var landing_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/landing/landing_dust.tscn")
 
 onready var effecst_anim : AnimationPlayer = $effects_anim
 onready var stats : Node = $stats
@@ -165,6 +166,12 @@ func running_dust() -> void:
 	var dust : Object = walking_dust_tscn.instance()
 	assert is_instance_valid(dust)
 	dust.position = position + Vector2(-8 * (dir_cur * 1), 0)
+	dust.scale.x = dir_cur
+	get_parent().add_child(dust)
+
+func landing_dust() -> void:
+	var dust : Object = landing_dust_tscn.instance()
+	dust.position = position + $rotate/player.position
 	dust.scale.x = dir_cur
 	get_parent().add_child(dust)
 

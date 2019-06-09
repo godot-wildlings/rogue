@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/player/animations/dust/landing/landing_dust.png" type="Texture" id=1]
+[ext_resource path="res://scenes/player/animations/dust/landing/cycle.anim" type="Animation" id=2]
+
+[node name="landing_dust" type="Sprite"]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -8 )
+hframes = 6
+frame = 5
+
+[node name="anim" type="AnimationPlayer" parent="."]
+autoplay = "cycle"
+playback_speed = 2.0
+anims/cycle = ExtResource( 2 )
+

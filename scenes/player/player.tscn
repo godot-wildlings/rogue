@@ -71,7 +71,6 @@ anims/run = ExtResource( 7 )
 anims/take_damage = ExtResource( 8 )
 
 [node name="states" type="Node" parent="."]
-editor/display_folded = true
 
 [node name="idle" type="Node" parent="states"]
 script = ExtResource( 9 )

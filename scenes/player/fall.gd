@@ -49,7 +49,7 @@ func run(obj : Object, delta : float):
 	if obj.check_ground():
 		obj.is_jumping = false
 		obj.double_jump = false
-		#obj.dust_land()
+		obj.landing_dust()
 		if is_moving:
 			obj.fsm.state_nxt = obj.fsm.STATES.run
 		else:

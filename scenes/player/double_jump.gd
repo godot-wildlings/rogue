@@ -8,7 +8,7 @@ func initialize(obj : Object) -> void:
 	obj.vel.y = -obj.JUMP_VEL
 	gravity_timer = obj.JUMP_MAXTIME
 	obj.jumping_dust()
-	#obj.jump()
+
 
 func run(obj : Object, delta : float) -> void:
 	if gravity_timer > 0:
@@ -41,7 +41,7 @@ func run(obj : Object, delta : float) -> void:
 	if obj.is_on_floor() and obj.check_ground():
 		obj.is_jumping = false
 		obj.double_jump = false
-		obj.dust_land()
+		obj.landing_dust()
 		if is_moving:
 			obj.fsm.state_nxt = obj.fsm.STATES.run
 		else:
