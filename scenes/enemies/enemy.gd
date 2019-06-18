@@ -1,30 +1,32 @@
 extends KinematicBody2D
 
-onready var direction_timer : Timer = $direction_timer
+class_name Enemy
+
 onready var area : Area2D = $area
 onready var anim : AnimationPlayer = $anim
 
 export var debug : bool = false
-export var speed : float = 100
+#warning-ignore:unused_class_variable
 export var damage : float = 1.5
 export var max_health : float = 5
 
 var health : float = max_health setget _set_health
-var direction : int = -1
+var velocity : Vector2 = Vector2.ZERO
+
+signal on_take_damage(new_health)
 
 func _ready() -> void:
-	assert is_instance_valid(direction_timer)
 	assert is_instance_valid(area)
 	assert is_instance_valid(anim)
 	assert anim.has_animation("take_damage")
 	#warning-ignore:return_value_discarded
-	direction_timer.connect("timeout", self, "_on_direction_timer_timeout")
+	if not is_connected("on_take_damage", self, "_on_take_damage"):
+		connect("on_take_damage", self, "_on_take_damage")
 
-#warning-ignore:unused_argument
 func _process(delta : float) -> void:
-	var velocity : Vector2 = Vector2.ZERO
-	velocity.x = speed * direction
-	velocity.y = min(velocity.y + game.GRAVITY * delta, game.TERMINAL_VELOCITY)
+	velocity = Vector2.ZERO
+	
+	_calculate_velocity(delta)
 
 	for body in area.get_overlapping_bodies():
 		assert is_instance_valid(body)
@@ -35,8 +37,9 @@ func _process(delta : float) -> void:
 	#warning-ignore:return_value_discarded
 	move_and_slide(velocity)
 
-func _on_direction_timer_timeout() -> void:
-	direction *= -1
+#warning-ignore:unused_argument
+func _calculate_velocity(delta : float) -> void:
+	pass
 
 func _death() -> void:
 	queue_free()
@@ -52,4 +55,8 @@ func take_damage(damage : float) -> void:
 	if debug: print("take_damage : " + str(damage))
 	if health > 0:
 		self.health -= damage
-		anim.play("take_damage")
+		emit_signal("on_take_damage", self.health)
+
+#warning-ignore:unused_argument
+func _on_take_damage(new_health : float) -> void:
+	anim.play("take_damage")
