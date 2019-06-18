@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-export var hit_wall_tscn : PackedScene = preload("res://scenes/projectiles/deku_nut/deku_nut_hit_wall.tscn")
+export var hit_wall_tscn : PackedScene = preload("res://scenes/projectiles/projectile_hit_wall.tscn")
 
 onready var visibility_notifier : VisibilityNotifier2D = $visibility_notifier
 

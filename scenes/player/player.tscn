@@ -15,7 +15,7 @@
 [ext_resource path="res://scenes/player/double_jump.gd" type="Script" id=13]
 [ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/player/arm.gd" type="Script" id=15]
-[ext_resource path="res://scenes/projectiles/deku_nut/deku_nut.tscn" type="PackedScene" id=16]
+[ext_resource path="res://scenes/projectiles/placeholder_projectile/placeholder_projectile.tscn" type="PackedScene" id=16]
 [ext_resource path="res://sfx/Jump2.wav" type="AudioStream" id=17]
 [ext_resource path="res://sfx/Jump3.wav" type="AudioStream" id=18]
 [ext_resource path="res://sfx/Jump4.wav" type="AudioStream" id=19]
@@ -54,14 +54,14 @@ position = Vector2( 0, 2 )
 shape = SubResource( 1 )
 
 [node name="down_left" type="RayCast2D" parent="."]
-position = Vector2( -4, 8 )
+position = Vector2( -6, 8 )
 enabled = true
 cast_to = Vector2( 0, 2 )
 collision_mask = 2
 collide_with_areas = true
 
 [node name="down_right" type="RayCast2D" parent="."]
-position = Vector2( 4, 8 )
+position = Vector2( 6, 8 )
 enabled = true
 cast_to = Vector2( 0, 2 )
 collision_mask = 2
@@ -97,7 +97,6 @@ script = ExtResource( 13 )
 [node name="camera" parent="camera_target" instance=ExtResource( 14 )]
 
 [node name="arm" type="Node2D" parent="."]
-editor/display_folded = true
 script = ExtResource( 15 )
 bullet_tscn = ExtResource( 16 )
 

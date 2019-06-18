@@ -1,8 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/projectiles/deku_nut/deku_nut_hit_wall.png" type="Texture" id=1]
-[ext_resource path="res://scenes/projectiles/deku_nut/projectile_hit_wall.anim" type="Animation" id=2]
-
+[ext_resource path="res://scenes/projectiles/projectile_hit_wall.anim" type="Animation" id=2]
 
 [node name="projectile_hit_wall" type="Sprite"]
 texture = ExtResource( 1 )
