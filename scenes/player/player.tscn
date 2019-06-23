@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/player/player.gd" type="Script" id=1]
 [ext_resource path="res://scenes/player/stats.gd" type="Script" id=2]
@@ -13,12 +13,11 @@
 [ext_resource path="res://scenes/player/fall.gd" type="Script" id=11]
 [ext_resource path="res://scenes/player/run.gd" type="Script" id=12]
 [ext_resource path="res://scenes/player/double_jump.gd" type="Script" id=13]
-[ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/player/arm.gd" type="Script" id=15]
-[ext_resource path="res://scenes/projectiles/placeholder_projectile/placeholder_projectile.tscn" type="PackedScene" id=16]
-[ext_resource path="res://sfx/Jump2.wav" type="AudioStream" id=17]
-[ext_resource path="res://sfx/Jump3.wav" type="AudioStream" id=18]
-[ext_resource path="res://sfx/Jump4.wav" type="AudioStream" id=19]
+[ext_resource path="res://scenes/player/pistol.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/camera/camera.tscn" type="PackedScene" id=15]
+[ext_resource path="res://sfx/Jump2.wav" type="AudioStream" id=16]
+[ext_resource path="res://sfx/Jump3.wav" type="AudioStream" id=17]
+[ext_resource path="res://sfx/Jump4.wav" type="AudioStream" id=18]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 7, 6 )
@@ -38,7 +37,6 @@ editor/display_folded = true
 texture = ExtResource( 3 )
 offset = Vector2( 0, -8 )
 vframes = 10
-frame = 6
 
 [node name="eyes" type="Sprite" parent="rotate"]
 position = Vector2( 0, -4 )
@@ -50,6 +48,7 @@ autoplay = "cycle"
 anims/cycle = ExtResource( 5 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2( 0, 2 )
 shape = SubResource( 1 )
 
@@ -92,16 +91,13 @@ script = ExtResource( 12 )
 [node name="double_jump" type="Node" parent="states"]
 script = ExtResource( 13 )
 
+[node name="arm" parent="." instance=ExtResource( 14 )]
+position = Vector2( -0.55, 5.5 )
+offset = Vector2( 7.55906, -0.491321 )
+
 [node name="camera_target" type="Node2D" parent="."]
 
-[node name="camera" parent="camera_target" instance=ExtResource( 14 )]
-
-[node name="arm" type="Node2D" parent="."]
-script = ExtResource( 15 )
-bullet_tscn = ExtResource( 16 )
-
-[node name="fire_position" type="Position2D" parent="arm"]
-position = Vector2( 20, 2 )
+[node name="camera" parent="camera_target" instance=ExtResource( 15 )]
 
 [node name="invincibility_timer" type="Timer" parent="."]
 wait_time = 1.5
@@ -111,14 +107,14 @@ wait_time = 1.5
 [node name="jump_sfx" type="Node" parent="sfx_container"]
 
 [node name="jump_sfx_1" type="AudioStreamPlayer" parent="sfx_container/jump_sfx"]
-stream = ExtResource( 17 )
+stream = ExtResource( 16 )
 bus = "sfx"
 
 [node name="jump_sfx_2" type="AudioStreamPlayer" parent="sfx_container/jump_sfx"]
-stream = ExtResource( 18 )
+stream = ExtResource( 17 )
 bus = "sfx"
 
 [node name="jump_sfx_3" type="AudioStreamPlayer" parent="sfx_container/jump_sfx"]
-stream = ExtResource( 19 )
+stream = ExtResource( 18 )
 bus = "sfx"
 

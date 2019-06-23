@@ -1,7 +1,7 @@
 extends KinematicBody2D
 
 onready var rotate : Node2D = $rotate
-onready var arm : Position2D = $arm
+onready var arm : Sprite = $arm
 onready var invincibility_timer : Timer = $invincibility_timer
 onready var walking_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/running/running_dust.tscn")
 onready var jumping_dust_tscn : PackedScene = preload("res://scenes/player/animations/dust/jumping/jumping_dust.tscn")
@@ -127,10 +127,6 @@ func _death() -> void:
 	get_tree().quit()
 
 func _fire(delta : float) -> void:
-	#			fsm.state_cur != fsm.STATES.interact and \
-#			fsm.state_cur != fsm.STATES.altar and \
-#			fsm.state_cur != fsm.STATES.hit and \
-#			fsm.state_nxt != fsm.STATES.hit and \
 	if not is_firing and \
 			Input.is_action_pressed("btn_fire") and\
 			arm.check_fire():
@@ -144,7 +140,7 @@ func _fire(delta : float) -> void:
 					round( 0*rand_range( -1, 1 ) ), \
 					round( rand_range( -3, 3 ) ) ) 
 				# nozzle blast
-#				var n = preload( "res://girl/bullet/muzzle_blast.tscn" ).instance()
+#				var n = preload( "res://scenes/player/bullet/muzzle_blast.tscn" ).instance()
 #				n.position = arm.get_node( "fire_position" ).position + roffset
 #				arm.add_child( n )
 				# instance bullet
