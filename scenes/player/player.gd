@@ -88,6 +88,8 @@ func _physics_process(delta : float) -> void:
 		anim_cur = anim_nxt
 		if $anim.has_animation(anim_cur):
 			$anim.play(anim_cur)
+		else:
+			push_warning("anim : " + anim_cur + " not found on player anim")
 
 func _aim_weapon(delta : float) -> void:
 	if can_aim:
