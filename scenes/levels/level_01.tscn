@@ -86,4 +86,3 @@ position = Vector2( 2068, 212 )
 
 [node name="patrolling_enemy" parent="." instance=ExtResource( 7 )]
 position = Vector2( 334.098, 157.469 )
-

@@ -25,4 +25,3 @@ collision_layer = 4
 shape = SubResource( 2 )
 
 [node name="anim" type="AnimationPlayer" parent="."]
-

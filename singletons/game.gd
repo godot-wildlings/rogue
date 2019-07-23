@@ -3,7 +3,7 @@ extends Node
 const GRAVITY = 1600
 const TERMINAL_VELOCITY = 660
 const WORLD_LIMIT_Y = 250
-
+const FLOOR = Vector2(0, -1)
 
 enum CONTROL_TYPE { CONTROL_MOUSE, CONTROL_GAMEPAD }
 

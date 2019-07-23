@@ -23,7 +23,7 @@ func _ready() -> void:
 	if not is_connected("on_take_damage", self, "_on_take_damage"):
 		connect("on_take_damage", self, "_on_take_damage")
 
-func _process(delta : float) -> void:
+func _physics_process(delta : float) -> void:
 	velocity = Vector2.ZERO
 	
 	_calculate_velocity(delta)
@@ -35,7 +35,7 @@ func _process(delta : float) -> void:
 			body.take_damage(damage)
 
 	#warning-ignore:return_value_discarded
-	move_and_slide(velocity)
+	move_and_slide(velocity, game.FLOOR)
 
 #warning-ignore:unused_argument
 func _calculate_velocity(delta : float) -> void:
